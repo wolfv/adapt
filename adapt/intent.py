@@ -71,6 +71,7 @@ class Intent(object):
         result = {'intent_type': self.name}
         intent_confidence = 0.0
         local_tags = tags[:]
+        print(local_tags)
         for require_type, attribute_name in self.requires:
             required_tag, canonical_form = find_first_tag(local_tags, require_type)
             if not required_tag:

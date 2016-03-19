@@ -173,6 +173,8 @@ class BronKerboschExpander(object):
             lattice.append(cliques)
         else:
             lattice.append(overlapping_spans)
-
+        for el in lattice.traverse():
+            print("TRAVERSING\n\n")
+            print(el)
         return lattice.traverse()
 

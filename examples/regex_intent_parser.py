@@ -34,11 +34,12 @@ for wt in weather_types:
     engine.register_entity(wt, "WeatherType")
 
 # create regex to parse out locations
-engine.register_regex_entity("in (?P<Location>.*)")
+# engine.register_regex_entity("in (?P<Location>.*)")
 
 # structure intent
 weather_intent = IntentBuilder("WeatherIntent")\
     .require("WeatherKeyword")\
+    .require("NumVal")
     .optionally("WeatherType")\
     .require("Location")\
     .build()

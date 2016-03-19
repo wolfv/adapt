@@ -9,6 +9,7 @@ import json
 import sys
 from adapt.intent import IntentBuilder
 from adapt.engine import IntentDeterminationEngine
+from adapt.special_tagger import NumTagger
 
 engine = IntentDeterminationEngine()
 
@@ -39,11 +40,16 @@ locations = [
 for loc in locations:
     engine.register_entity(loc, "Location")
 
+engine.register_special_tagger(NumTagger())
+# engine.register_regex_entity("as")
+
 weather_intent = IntentBuilder("WeatherIntent")\
     .require("WeatherKeyword")\
     .optionally("WeatherType")\
     .require("Location")\
+    .require("numeric")\
     .build()
+
 
 engine.register_intent_parser(weather_intent)
 

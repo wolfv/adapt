@@ -25,6 +25,9 @@ class Parser(pyee.EventEmitter):
                       'time': time.time() - start
                   })
         start = time.time()
+
+        print(tagged)
+
         bke = BronKerboschExpander(self._tokenizer)
 
         def score_clique(clique):
@@ -36,12 +39,14 @@ class Parser(pyee.EventEmitter):
             return score
 
         parse_results = bke.expand(tagged, clique_scoring_func=score_clique)
+        print(parse_results)
         count = 0
         for result in parse_results:
             count += 1
             parse_confidence = 0.0
             for tag in result:
                 sample_entity = tag['entities'][0]
+                print("Sample e", sample_entity)
                 entity_confidence = sample_entity.get('confidence', 0.0) * float(
                     len(sample_entity.get('match'))) / len(utterance)
                 parse_confidence += entity_confidence

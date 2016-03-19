@@ -4,16 +4,20 @@ from six.moves import xrange
 __author__ = 'seanfitz'
 
 
+
+
 class EntityTagger(object):
     """
     Known Entity Tagger
     Given an index of known entities, can efficiently search for those entities within a provided utterance.
     """
-    def __init__(self, trie, tokenizer, regex_entities=[], max_tokens=20):
+    def __init__(self, trie, tokenizer, regex_entities=[], special_tagger=[], max_tokens=20):
+
         self.trie = trie
         self.tokenizer = tokenizer
         self.max_tokens = max_tokens
         self.regex_entities = regex_entities
+        self.special_tagger = special_tagger
 
     def _iterate_subsequences(self, tokens):
         """
@@ -70,6 +74,11 @@ class EntityTagger(object):
                     entities.append(sub_entity)
         additional_sort = len(entities) > 0
 
+        if self.special_tagger:
+            for tagger in self.special_tagger:
+                entities.extend(tagger.match(tokens))
+                print(entities)
+
         for i in xrange(len(tokens)):
             part = ' '.join(tokens[i:])
 
@@ -86,4 +95,6 @@ class EntityTagger(object):
         if additional_sort:
             entities = self._sort_and_merge_tags(entities)
 
+        import pprint
+        pprint.pprint(entities)
         return entities
